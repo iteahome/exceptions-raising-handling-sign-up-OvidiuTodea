@@ -1,0 +1,4 @@
+andrei.mladin@gmail.com;iteahome
+ovi.todea@yahoo.com;parola
+test@yahoo.com;test
+anca@yahoo.com;password111

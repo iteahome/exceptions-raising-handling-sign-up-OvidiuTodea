@@ -8,6 +8,7 @@ import com.facebook.model.User;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class UserDAO {
 
@@ -15,15 +16,19 @@ public class UserDAO {
 
     public List<User> readAllUsers() throws FbTechnicalException {
         List<User> userList = new ArrayList<>();
-        try (BufferedReader userReader = new BufferedReader(new FileReader(USERS_FILE))) {
-            String userLine = userReader.readLine();
-            String[] userValues = userLine.split(";");
+        Scanner scannerText=null;
+        try {
+            scannerText=new Scanner(new BufferedReader(new FileReader(USERS_FILE)));
+            String userLine="";
+            while(scannerText.hasNextLine()){
+                userLine = scannerText.nextLine();
+                String[] userValues = userLine.split(";");
 
-            userList.add(new User(userValues[0], userValues[1]));
+                userList.add(new User(userValues[0], userValues[1]));
+            }
         } catch (IOException e) {
             throw new FbFileException("Error reading users", e);
         }
-
         return userList;
     }
 
@@ -31,10 +36,10 @@ public class UserDAO {
 
         try (FileWriter fileWriter = new FileWriter(USERS_FILE, true);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-                bufferedWriter.newLine();
-                bufferedWriter.write(user.getEmail());
-                bufferedWriter.write(";");
-                bufferedWriter.write(user.getPassword());
+            bufferedWriter.newLine();
+            bufferedWriter.write(user.getEmail());
+            bufferedWriter.write(";");
+            bufferedWriter.write(user.getPassword());
         } catch (IOException e) {
             throw new FbFileException("Error writing user to file", e);
         }
